@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MotoAPP.Views.PrincipalView"
+             Title="Tela Principal"
+             WidthRequest="400">
+    <ScrollView>
+        <StackLayout>
+            <Label Text="Seja Bem-Vindo!"
+                   FontSize="36"
+                   FontAttributes="Bold"/>
+
+            <Button Text="Voltar"
+                    Command="{Binding CommandVoltar}"
+                    Margin="0,20,0,0"/>
+
+            <Button Text="Cadastrar Moto"
+                    Command="{Binding CommandMotoView}"
+                    Margin="0,20,0,0"/>
+
+            <Button Text="Visualizar Motos"
+                    Command="{Binding CommandVisMotoView}"
+                    Margin="0,20,0,0"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

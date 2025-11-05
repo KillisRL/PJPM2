@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MotoAPP.Views.CadMotoView"
+             Title="Cadastro de Moto"
+             WidthRequest="400">
+    <ScrollView>
+
+        <Border>
+            <StackLayout>
+                
+                <!-- Descrição -->
+                <Label Text="Descrição"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+                <Entry Text="{Binding Descricao}"
+                       Placeholder="CG 160"/>
+
+                <!-- Marca -->
+                <Label Text="Marca"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+                <Entry Text="{Binding Marca}"
+                       Placeholder="HONDA"/>
+
+                <!-- Modelo -->
+                <Label Text="Modelo"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+                <Entry Text="{Binding Modelo}"
+                       Placeholder="TITAN ESD"/>
+
+                <!-- Ano -->
+                <Label Text="Ano"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+                <Entry Text="{Binding Ano}"
+                       Placeholder="2026"/>
+
+                <Button Text="Cadastrar"
+                        Command="{Binding CommandAlterar}" 
+                        IsVisible="{Binding IsNotEditMode}"/>
+                <!--CommandCadastrar e CommandAlterar -->
+
+                <Button Text="Salvar Alteração"
+                        Command="{Binding CommandAlterar}"
+                        IsVisible="{Binding IsEditMode}"/>
+
+                <Button Text="Voltar"
+                        Command="{Binding CommandVoltar}"/>
+            </StackLayout> 
+        </Border>
+    </ScrollView>
+</ContentPage>

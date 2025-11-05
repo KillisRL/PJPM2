@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MotoAPP.Views.CadastroView"
+             Title="Cadastro de Usuário"
+             WidthRequest="400 ">
+    <ScrollView>
+        <Border Padding="50">
+            
+            <StackLayout>
+
+                <Label Text="Login"
+                       HorizontalOptions="Center"
+                       FontSize="36"
+                       FontAttributes="Bold"/>
+                <!-- Username -->
+                <Label Text="Usuário"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+                <Entry Placeholder="luiz.dsilva"
+                       Text="{Binding Username}"/>
+
+                <!-- Email -->
+                <Label Text="E-mail"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+                <Entry Placeholder="email@gmail.com"
+                       Text="{Binding Email}"/>
+
+                <!-- Telefone -->
+                <Label Text="Telefone"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+                <Entry Placeholder="xx xxxxx xxxx"
+                       Text="{Binding Telefone}"/>
+
+                <!-- Senha -->
+                <Label Text="Senha"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+                <Entry Placeholder="************"
+                       Text="{Binding Senha}"
+                       IsPassword="True"/>
+
+                <Label Text="Usuário Admin" FontSize="24" FontAttributes="Bold"/>
+                <CheckBox IsChecked="{Binding TipoUsuario}"/>
+
+                <StackLayout Padding="20"/>
+                <Button Text="Cadastrar"
+                        Command="{Binding CommandCadastrar}"/>
+
+            </StackLayout>
+        </Border>
+    </ScrollView>
+</ContentPage>

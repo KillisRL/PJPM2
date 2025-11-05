@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MotoAPP.Views.LoginView"
+             Title="Tela de Login"
+             WidthRequest="400">
+    <ScrollView>
+        <Border HorizontalOptions="Center"
+                Padding="50">
+            <StackLayout>
+
+            <Label Text="Login"
+                   FontSize="25"
+                   FontAttributes="Bold"/>
+
+            <!-- USUÁRIO -->
+            <Label Text="Usuário"
+                   FontSize="16"
+                   FontAttributes="Bold"/>
+            <Entry Placeholder="luiz.dsilva"
+                   Text="{Binding Username}"/>
+
+            <!-- SENHA -->
+            <Label Text="Senha"
+                   FontSize="16"
+                   FontAttributes="Bold"/>
+            <Entry Placeholder="*************"
+                   Text="{Binding Senha}"
+                   IsPassword="True"/>
+            
+            <HorizontalStackLayout HorizontalOptions="Center"
+                                   Margin="20">
+                
+                <!-- BOTÕES -->
+                <Button Text="Cadastrar"
+                        Command="{Binding CommandCadView}"/>
+
+                <Button Text="Acessar"
+                        Command="{Binding CommandAcessar}"/>
+            </HorizontalStackLayout>
+
+
+            </StackLayout>
+        </Border>
+    </ScrollView>
+</ContentPage>
