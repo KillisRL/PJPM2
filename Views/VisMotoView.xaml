@@ -56,6 +56,11 @@
             <Button Text="Editar Motos"
                  Command="{Binding CommandEditar}"
                  Margin="0,20,0,0"/>
+            <Button Text="Excluir Moto Selecionada"
+                Command="{Binding CommandExcluir}"
+                BackgroundColor="Red"
+                TextColor="White"
+                Margin="0,10,0,0"/>
 
         </VerticalStackLayout>
 
