@@ -38,16 +38,14 @@
                        Placeholder="2026"/>
 
                 <Button Text="Cadastrar"
-                        Command="{Binding CommandAlterar}" 
-                        IsVisible="{Binding IsNotEditMode}"/>
-                <!--CommandCadastrar e CommandAlterar -->
+        Command="{Binding CommandCadastrar}" IsVisible="{Binding IsNotEditMode}"/>
 
                 <Button Text="Salvar Alteração"
-                        Command="{Binding CommandAlterar}"
-                        IsVisible="{Binding IsEditMode}"/>
+        Command="{Binding CommandAlterar}"
+        IsVisible="{Binding IsEditMode}"/>
 
                 <Button Text="Voltar"
-                        Command="{Binding CommandVoltar}"/>
+        Command="{Binding CommandVoltar}"/>
             </StackLayout> 
         </Border>
     </ScrollView>

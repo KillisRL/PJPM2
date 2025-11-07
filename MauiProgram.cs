@@ -24,9 +24,6 @@ namespace MotoAPP
             builder.Services.AddSingleton<MotoVM>();
             builder.Services.AddSingleton<UserVM>();
 
-            // Registre seus ViewModels
-            builder.Services.AddTransient<MotoVM>();
-            builder.Services.AddTransient<UserVM>();
 
             // Registre suas Views (Páginas)
             builder.Services.AddTransient<CadMotoView>();

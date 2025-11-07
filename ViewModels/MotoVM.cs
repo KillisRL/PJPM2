@@ -4,6 +4,7 @@ using MotoAPP.Views;
 using System.Security.Cryptography.X509Certificates;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace MotoAPP.ViewModels
 {
@@ -13,12 +14,12 @@ namespace MotoAPP.ViewModels
         private readonly MotoService _motoservice;
 
         // VARIAVEIS
-        private string _descricao;
-        private string _marca;
-        private string _modelo;
-        private string _ano;
-        private ObservableCollection<Moto> _motos;
-        private Moto _motoSelecionada;
+        private string? _descricao;
+        private string? _marca;
+        private string? _modelo;
+        private string? _ano;
+        private ObservableCollection<Moto>? _motos;
+        private Moto? _motoSelecionada;
         private bool _isEditMode;
         // COMANDOS
 
@@ -29,6 +30,7 @@ namespace MotoAPP.ViewModels
         public ICommand CommandVisMotoView { get; set; }
         public ICommand CommandEditar  {get; set; }
         public ICommand CommandAlterar { get; set; }
+        public ICommand CommandExcluir { get; set; }
 
         // PROPRIEDADES
         public bool IsEditMode
@@ -42,7 +44,7 @@ namespace MotoAPP.ViewModels
             }
         }
         public bool IsNotEditMode => !IsEditMode;
-        public string Descricao
+        public string? Descricao
         {
             get { return _descricao; }
             set
@@ -52,7 +54,7 @@ namespace MotoAPP.ViewModels
             }
 
         }
-        public string Marca
+        public string? Marca
         {
             get { return _marca; }
             set
@@ -63,7 +65,7 @@ namespace MotoAPP.ViewModels
 
         }
         
-        public string Modelo
+        public string? Modelo
         {
             get { return _modelo; }
             set
@@ -73,7 +75,7 @@ namespace MotoAPP.ViewModels
             }
 
         }
-        public string Ano
+        public string? Ano
         {
             get { return _ano; }
             set
@@ -83,7 +85,7 @@ namespace MotoAPP.ViewModels
             }
 
         }
-        public ObservableCollection<Moto> Motos
+        public ObservableCollection<Moto>? Motos
         {
             get { return _motos; }
             set
@@ -116,7 +118,7 @@ namespace MotoAPP.ViewModels
             _motoservice.Insert(moto);
 
             InfTela("Moto Cadastrada com sucesso!😎");
-            Shell.Current.GoToAsync(nameof(CadMotoView));
+            Shell.Current.GoToAsync(nameof(VisMotoView));
         }
 
         void VisMoto()
@@ -128,18 +130,26 @@ namespace MotoAPP.ViewModels
             Motos = new ObservableCollection<Moto>(listaDoDB);
         }
 
-        void MotoCadView()
+        async void MotoCadView()
         {
-            MotoSelecionada = null; // Garante que não há moto selecionada
-            IsEditMode = false; // Define o modo como "Criação"
-            Shell.Current.GoToAsync(nameof(CadMotoView));
+            Descricao = string.Empty;
+            Marca = string.Empty;
+            Modelo = string.Empty;
+            Ano = string.Empty;
+            MotoSelecionada = null; // Garante que não estamos editando
+
+            // 2. Define o modo como "Criação" (NÃO é edição)
+            IsEditMode = false;
+
+            // 3. Navega para a tela de cadastro
+            await Shell.Current.GoToAsync(nameof(CadMotoView));
         }
 
         void MotoVisView()
         {
             Shell.Current.GoToAsync(nameof(VisMotoView));
         }
-        public Moto MotoSelecionada
+        public Moto? MotoSelecionada
         {
             get { return _motoSelecionada; }
             set
@@ -148,7 +158,7 @@ namespace MotoAPP.ViewModels
                 OnPropertyChanged();
             }
         }
-        void PreencherParaEditar()
+        async void PreencherParaEditar()
         {
             // 1. Verifica a propriedade pública
             if (MotoSelecionada == null)
@@ -157,7 +167,6 @@ namespace MotoAPP.ViewModels
                 return;
             }
 
-            // 2. CORREÇÃO: Lê os dados da PROPRIEDADE PÚBLICA
             Descricao = MotoSelecionada.Descricao;
             Marca = MotoSelecionada.Marca;
             Modelo = MotoSelecionada.Modelo;
@@ -165,11 +174,48 @@ namespace MotoAPP.ViewModels
 
             // 3. Define o modo e navega
             IsEditMode = true;
-            Shell.Current.GoToAsync(nameof(CadMotoView));
+            await Shell.Current.GoToAsync(nameof(CadMotoView));
+        }
+        async void ExcluirMoto()
+        {
+            var motoParaExcluir = MotoSelecionada;
+            // 1. Verifica a propriedade pública
+            if (motoParaExcluir == null)
+            {
+                AvisoTela("Selecione uma moto para Excluir.");
+                return;
+            }
+
+            bool confirmou = await Application.Current.MainPage.DisplayAlert("Confirmar Exclusão",
+                $"Tem certeza que deseja excluir a moto: {motoParaExcluir.Descricao}?",
+                "Sim, Excluir",
+                "Não");
+
+            if(!confirmou)
+            {
+                return;
+            }
+            else
+            {
+                try
+                {
+                    _motoservice.Delete(motoParaExcluir);
+                    Motos.Remove(motoParaExcluir);
+
+                    MotoSelecionada = null;
+                    InfTela("Moto excluída com sucesso.");
+                }
+                catch(Exception ex)
+                {
+                    ErroTela($"Erro ao excluir: {ex.Message}");
+                }
+            }
+
         }
 
         void AlterarMoto()
         {
+           
             // 1. Verifica se uma moto foi selecionada ANTES de navegar para esta tela
             if (MotoSelecionada == null)
             {
@@ -201,13 +247,15 @@ namespace MotoAPP.ViewModels
         public MotoVM(MotoService motoService)
         {
             _motoservice = motoService;
+            CommandEditar = new Command(PreencherParaEditar);
             CommandCadastrar = new Command(CadastrarMoto);
             CommandVoltar = new Command (base.Voltar);
             CommandMotoView = new Command(MotoCadView);
             CommandVisualizar = new Command(VisMoto);
             CommandVisMotoView = new Command(MotoVisView);
             CommandAlterar = new Command(AlterarMoto);
-            CommandEditar = new Command(PreencherParaEditar);
+            CommandExcluir = new Command(ExcluirMoto);
+            
         }
     }
 }
