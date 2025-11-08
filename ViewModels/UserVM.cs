@@ -17,18 +17,6 @@ namespace MotoAPP.ViewModels
         private string _telefone;
         private string _senha;
         private bool _tipousuario;
-
-        // PROPRIEDADES
-        //public int UserID
-        //{
-        //    get { return _userid; }
-        //    set
-        //    {
-        //        _userid = value;
-        //        OnPropertyChanged();
-        //    }
-                
-        //}
         public string Username
         {
             get { return _username; }
@@ -150,7 +138,7 @@ namespace MotoAPP.ViewModels
                 }
                 else 
                 {
-                    await Shell.Current.GoToAsync(nameof(CadMotoView));
+                    await Shell.Current.GoToAsync(nameof(PgPrincipalCliente));
                 }
             }
             else

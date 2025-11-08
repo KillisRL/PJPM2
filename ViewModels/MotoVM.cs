@@ -10,6 +10,8 @@ namespace MotoAPP.ViewModels
 {
     public class MotoVM : BaseVM
     {
+        private readonly CompraService _compraService;
+        private readonly SessaoUsuarioService _sessaoService;
 
         private readonly MotoService _motoservice;
 
@@ -31,6 +33,8 @@ namespace MotoAPP.ViewModels
         public ICommand CommandEditar  {get; set; }
         public ICommand CommandAlterar { get; set; }
         public ICommand CommandExcluir { get; set; }
+
+        public ICommand CommandComprar { get; set; }
 
         // PROPRIEDADES
         public bool IsEditMode
@@ -242,6 +246,18 @@ namespace MotoAPP.ViewModels
 
             Shell.Current.GoToAsync(nameof(VisMotoView));
         }
+        async void ComprarMoto()
+        {
+            if (MotoSelecionada != null && SessaoUsuarioService.Usuariologado != null)
+            {
+                decimal valorDoConsorcio = 10000.00m; // Pega o valor de algum lugar
+
+                // A ViewModel apenas DELEGA a tarefa para o serviço
+                _compraService.SalvarCompra(MotoSelecionada, SessaoUsuarioService.Usuariologado, valorDoConsorcio);
+
+                InfTela("Compra realizada com sucesso!");
+            }
+        }
         // CONSTRUTOR
 
         public MotoVM(MotoService motoService)
@@ -255,6 +271,7 @@ namespace MotoAPP.ViewModels
             CommandVisMotoView = new Command(MotoVisView);
             CommandAlterar = new Command(AlterarMoto);
             CommandExcluir = new Command(ExcluirMoto);
+            CommandComprar = new Command(ComprarMoto);
             
         }
     }
