@@ -8,20 +8,23 @@ using System.Threading.Tasks;
 
 namespace MotoAPP.Services
 {
-    public partial class SessaoUsuarioService
+    public static class SessaoUsuarioService 
     {
         public static Usuario? Usuariologado { get; private set; }
-        public static event Action? OnSessaoChanged; 
 
-        public static void IniciarSessao(Usuario user) 
+        // (Opcional, mas bom) Evento para notificar a UI se o usuário mudar
+        public static event Action? OnSessaoChanged;
+
+        public static void IniciarSessao(Usuario user)
         {
             Usuariologado = user;
-            
+            OnSessaoChanged?.Invoke(); // Dispara o evento
         }
 
-        public static void EncerrarSessao() // Método de Logout unificado
+        public static void EncerrarSessao()
         {
             Usuariologado = null;
+            OnSessaoChanged?.Invoke(); // Dispara o evento
         }
     }
 }

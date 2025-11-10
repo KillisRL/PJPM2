@@ -9,6 +9,9 @@
             <Label Text="Seja Bem-Vindo!"
                    FontSize="36"
                    FontAttributes="Bold"/>
+            <Label Text="{Binding NomeUsuarioLogado, StringFormat='Bem-Vindo: {0}'}"
+                   FontAttributes="Bold"
+                   FontSize="Subtitle"/>
 
             <Button Text="Voltar"
                     Command="{Binding CommandVoltar}"
