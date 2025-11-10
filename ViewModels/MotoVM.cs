@@ -10,8 +10,15 @@ namespace MotoAPP.ViewModels
 {
     public class MotoVM : BaseVM
     {
+        public string NomeUsuarioLogado
+        {
+            get
+            {
+                // Busca o nome do usuário na sessão estática
+                return SessaoUsuarioService.Usuariologado?.Username ?? "Convidado";
+            }
+        }
         private readonly CompraService _compraService;
-        private readonly SessaoUsuarioService _sessaoService;
 
         private readonly MotoService _motoservice;
 
@@ -272,7 +279,10 @@ namespace MotoAPP.ViewModels
             CommandAlterar = new Command(AlterarMoto);
             CommandExcluir = new Command(ExcluirMoto);
             CommandComprar = new Command(ComprarMoto);
-            
+
+            SessaoUsuarioService.OnSessaoChanged +=
+                () => OnPropertyChanged(nameof(NomeUsuarioLogado));
+
         }
     }
 }

@@ -6,8 +6,6 @@ namespace MotoAPP.Services
     public class MotoService
     {
         private readonly CompraService _compraService;
-
-        private readonly SessaoUsuarioService _sessaoService; // Para pegar o usuário
         private SQLiteConnection _connection;
         public MotoService()
         {

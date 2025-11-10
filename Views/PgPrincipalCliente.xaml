@@ -5,7 +5,9 @@
              Title="PgPrincipalCliente">
     <ScrollView>
         <VerticalStackLayout>
-            <Label Text="{Binding}"/>
+            <Label Text="{Binding NomeUsuarioLogado, StringFormat='Bem-Vindo: {0}'}"
+                   FontAttributes="Bold"
+                   FontSize="Subtitle"/>
             <!--#region List View-->
             <ListView x:Name="MotosListView"
                ItemsSource="{Binding Motos}"
