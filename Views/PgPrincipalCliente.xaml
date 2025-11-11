@@ -2,66 +2,109 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MotoAPP.Views.PgPrincipalCliente"
-             Title="PgPrincipalCliente">
-    <ScrollView>
-        <VerticalStackLayout>
-            <Label Text="{Binding NomeUsuarioLogado, StringFormat='Bem-Vindo: {0}'}"
+             Title="Principal do Cliente"
+             BackgroundColor="#1E1E1E">
+    <ContentPage.Resources>
+        <Style x:Key="PrimaryActionButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#007bff"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="HeightRequest" Value="55"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+        </Style>
+        <Style x:Key="SecondaryActionButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#28a745"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="HeightRequest" Value="55"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *, Auto" Padding="20" RowSpacing="15">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="5" Margin="0,0,0,10">
+            <Label Text="Bem-Vindo!"
+                   FontSize="30"
                    FontAttributes="Bold"
-                   FontSize="Subtitle"/>
-            <!--#region List View-->
-            <ListView x:Name="MotosListView"
-               ItemsSource="{Binding Motos}"
-               SelectedItem="{Binding MotoSelecionada}"
-               HasUnevenRows="True">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid Padding="15" 
-                               ColumnDefinitions="*, Auto, Auto" 
-                               ColumnSpacing="10">
-
-                                <VerticalStackLayout Grid.Column="0">
-
-                                    <Label Text="{Binding Descricao}" 
-                                        FontAttributes="Bold" />
-                                    <Label Text="{Binding Marca}" 
-                                        FontSize="Small" 
-                                        TextColor="Gray" />
-
-                                </VerticalStackLayout>
-
-                                <Label Grid.Column="1" 
-                                    Text="{Binding Modelo}" 
-                                    VerticalOptions="Center" />
-
-                                <Label Grid.Column="2" 
-                                    Text="{Binding Ano}" 
-                                    VerticalOptions="Center" 
-                                    FontAttributes="Italic" />
-
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <!--#endregion-->
-            <Button Text="Visualizar" 
-                 Command="{Binding CommandVisualizar}" 
-                 Margin="0,20,0,0" />
-
-            <!--<Button Text="Voltar"
-                 Command="{Binding CommandVoltar}"
-                 Margin="0,20,0,0"/>
-            <Button Text="Editar Motos"
-              Command="{Binding CommandEditar}"
-              Margin="0,20,0,0"/>
-            <Button Text="Excluir Moto Selecionada"
-             Command="{Binding CommandExcluir}"
-             BackgroundColor="Red"
-             TextColor="White"
-             Margin="0,10,0,0"/>-->
-
+                   TextColor="White"
+                   HorizontalOptions="Center"/>
+            <Label Text="{Binding NomeUsuarioLogado, StringFormat='Olá, {0}'}"
+                   FontAttributes="Italic"
+                   FontSize="18"
+                   TextColor="#AAAAAA"
+                   HorizontalOptions="Center"/>
         </VerticalStackLayout>
 
-    </ScrollView>
+        <ListView Grid.Row="1"
+                  x:Name="MotosListView"
+                  ItemsSource="{Binding Motos}"
+                  SelectedItem="{Binding MotoSelecionada}"
+                  HasUnevenRows="True"
+                  BackgroundColor="Transparent"
+                  SeparatorVisibility="None">
+
+            <ListView.Header>
+                <Label Text="Motos Disponíveis para Consórcio" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       TextColor="White" 
+                       Margin="0,10,0,10"/>
+            </ListView.Header>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame Padding="15" Margin="0,5" CornerRadius="10" BackgroundColor="#2A2A2A">
+                            <Grid ColumnDefinitions="*, Auto, Auto" ColumnSpacing="15">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="{Binding Descricao}" 
+                                           FontAttributes="Bold" 
+                                           FontSize="18" 
+                                           TextColor="White"/>
+                                    <Label Text="{Binding Marca}" 
+                                           FontSize="14" 
+                                           TextColor="#CCCCCC"/>
+                                </VerticalStackLayout>
+                                <Label Grid.Column="1" 
+                                       Text="{Binding Modelo}" 
+                                       VerticalOptions="Center" 
+                                       FontSize="14" 
+                                       TextColor="#AAAAAA"/>
+                                <Label Grid.Column="2" 
+                                       Text="{Binding Ano}" 
+                                       VerticalOptions="Center" 
+                                       FontAttributes="Italic" 
+                                       FontSize="14" 
+                                       TextColor="#AAAAAA"/>
+                            </Grid>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <VerticalStackLayout Grid.Row="2" Spacing="10" Margin="0,20,0,0">
+            <Button Text="Comprar Consórcio"
+                    Command="{Binding CommandComprarMoto}"
+                    Style="{StaticResource SecondaryActionButton}"/>
+
+            <Button Text="Meus Consórcios"
+                    Command="{Binding CommandAbrirMinhasCompras}"
+                    Style="{StaticResource PrimaryActionButton}"/>
+
+            <Button Text="Voltar"
+                    Command="{Binding CommandVoltar}"
+                    BackgroundColor="#6c757d"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="50"
+                    FontSize="16"
+                    Margin="0,10,0,0"/>
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>

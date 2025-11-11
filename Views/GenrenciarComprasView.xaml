@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MotoAPP.Views.GenrenciarComprasView"
+             Title="Gerenciar Lançamentos de Clientes"
+             BackgroundColor="#1E1E1E">
+    <Grid RowDefinitions="Auto, *, Auto" Padding="20" RowSpacing="15">
+
+        <Label Grid.Row="0" 
+               Text="Lançamentos de Clientes" 
+               FontSize="24" 
+               FontAttributes="Bold"
+               TextColor="White"/>
+
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding MinhasCompras}" 
+                  HasUnevenRows="True"
+                  BackgroundColor="Transparent"
+                  SeparatorVisibility="None">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame Padding="15" Margin="0,5" CornerRadius="10" BackgroundColor="#2A2A2A">
+                            <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, Auto" RowSpacing="8">
+
+                                <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                                    <Label Text="Cliente:" FontSize="12" TextColor="#AAAAAA"/>
+                                    <Label Text="{Binding Usuario.Username}" 
+                                           FontAttributes="Bold" 
+                                           FontSize="18" 
+                                           TextColor="#007bff"/>
+                                </VerticalStackLayout>
+
+                                <Label Grid.Row="0" Grid.Column="1"
+                                       Text="{Binding ValorCompra, StringFormat='R$ {0:N2}'}" 
+                                       FontAttributes="Bold" 
+                                       TextColor="LightGreen" 
+                                       FontSize="16"
+                                       HorizontalOptions="End"/>
+
+                                <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Margin="0,5,0,0">
+                                    <Label Text="Moto:" FontSize="12" TextColor="#AAAAAA"/>
+                                    <Label Text="{Binding Moto.Descricao}" 
+                                           FontAttributes="Bold" 
+                                           FontSize="16"
+                                           TextColor="White"/>
+                                    <Label FontSize="14" TextColor="#CCCCCC">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Moto.Marca}"/>
+                                                <Span Text=" / "/>
+                                                <Span Text="{Binding Moto.Modelo}"/>
+                                                <Span Text=" (Ano: "/>
+                                                <Span Text="{Binding Moto.Ano}"/>
+                                                <Span Text=")"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Grid.Row="2"
+                Text="Voltar" 
+                Command="{Binding CommandVoltar}" 
+                Margin="0,10,0,0"/>
+
+    </Grid>
+</ContentPage>
