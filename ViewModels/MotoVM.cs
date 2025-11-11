@@ -40,8 +40,10 @@ namespace MotoAPP.ViewModels
         public ICommand CommandEditar  {get; set; }
         public ICommand CommandAlterar { get; set; }
         public ICommand CommandExcluir { get; set; }
+        public ICommand CommandAbrirMinhasCompras { get; set; }
+        public ICommand CommandComprarMoto { get; set; }
 
-        public ICommand CommandComprar { get; set; }
+        public ICommand CommandGerenciarComprasMoto { get; set; }
 
         // PROPRIEDADES
         public bool IsEditMode
@@ -253,23 +255,80 @@ namespace MotoAPP.ViewModels
 
             Shell.Current.GoToAsync(nameof(VisMotoView));
         }
-        async void ComprarMoto()
+        private void ComprarMoto()
         {
-            if (MotoSelecionada != null && SessaoUsuarioService.Usuariologado != null)
+            // Valida se a moto está selecionada
+            if (MotoSelecionada == null)
             {
-                decimal valorDoConsorcio = 10000.00m; // Pega o valor de algum lugar
-
-                // A ViewModel apenas DELEGA a tarefa para o serviço
-                _compraService.SalvarCompra(MotoSelecionada, SessaoUsuarioService.Usuariologado, valorDoConsorcio);
-
-                InfTela("Compra realizada com sucesso!");
+                AvisoTela("Por favor, selecione uma moto para comprar.");
+                return;
             }
+
+            // Valida se o usuário está logado (usando o SessaoUsuarioService)
+            var usuarioLogado = SessaoUsuarioService.Usuariologado;
+            if (usuarioLogado == null)
+            {
+                AvisoTela("Você precisa estar logado para realizar uma compra.");
+                // Opcional: navegar para a tela de login
+                // Shell.Current.GoToAsync(nameof(LoginView));
+                return;
+            }
+
+            // Assumindo que sua classe 'Moto' tem a propriedade 'Valor'
+            // Se o valor do consórcio for fixo (como 10000.00m), use esse valor.
+            // Vou usar um valor fixo como no seu exemplo:
+            decimal valorDoConsorcio = 10000.00m;
+
+            try
+            {
+                // Chama o serviço para salvar
+                _compraService.SalvarCompra(MotoSelecionada, usuarioLogado, valorDoConsorcio);
+
+                InfTela($"Parabéns, {usuarioLogado.Username}! Consórcio da {MotoSelecionada.Descricao} iniciado.");
+
+                // Opcional: Limpar a seleção ou navegar para outra tela
+                MotoSelecionada = null;
+            }
+            catch (Exception ex)
+            {
+                ErroTela($"Erro ao salvar a compra: {ex.Message}");
+            }
+        }
+
+        private async Task NavegarParaCompra()
+        {
+            // 1. Validar se a moto foi selecionada na lista
+            if (MotoSelecionada == null)
+            {
+                 AvisoTela("Selecione uma moto da lista para comprar.");
+                return;
+            }
+
+            // 2. Validar se o usuário está logado
+            if (SessaoUsuarioService.Usuariologado == null)
+            {
+                 AvisoTela("Você precisa estar logado para comprar.");
+                // Opcional: navegar para o login
+                // await Shell.Current.GoToAsync(nameof(LoginView)); 
+                return;
+            }
+
+            // 3. Preparar o parâmetro para enviar a moto
+            var navigationParameter = new Dictionary<string, object>
+        {
+            { "MotoParaComprar", MotoSelecionada } // A chave "MotoParaComprar" é importante
+        };
+
+            // 4. Navegar para a nova tela de Compra (que vamos criar)
+            await Shell.Current.GoToAsync(nameof(CompraMotoView), navigationParameter);
         }
         // CONSTRUTOR
 
-        public MotoVM(MotoService motoService)
+        public MotoVM(MotoService motoService, CompraService compraService)
         {
             _motoservice = motoService;
+            _compraService = compraService;
+
             CommandEditar = new Command(PreencherParaEditar);
             CommandCadastrar = new Command(CadastrarMoto);
             CommandVoltar = new Command (base.Voltar);
@@ -278,7 +337,10 @@ namespace MotoAPP.ViewModels
             CommandVisMotoView = new Command(MotoVisView);
             CommandAlterar = new Command(AlterarMoto);
             CommandExcluir = new Command(ExcluirMoto);
-            CommandComprar = new Command(ComprarMoto);
+            CommandComprarMoto = new Command(async () => await NavegarParaCompra());
+            CommandAbrirMinhasCompras = new Command(async () => await Shell.Current.GoToAsync(nameof(MinhasComprasView)));
+            CommandGerenciarComprasMoto = new Command(async () => await Shell.Current.GoToAsync(nameof(GenrenciarComprasView)));
+
 
             SessaoUsuarioService.OnSessaoChanged +=
                 () => OnPropertyChanged(nameof(NomeUsuarioLogado));

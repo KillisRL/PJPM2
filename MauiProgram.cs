@@ -20,9 +20,14 @@ namespace MotoAPP
 
             // Registre seus Serviços
             builder.Services.AddSingleton<MotoService>();
+            builder.Services.AddSingleton<DataBaseService>();
             builder.Services.AddSingleton<UserService>();
+            builder.Services.AddSingleton<CompraService>();
             builder.Services.AddSingleton<MotoVM>();
             builder.Services.AddSingleton<UserVM>();
+            builder.Services.AddTransient<CompraVM>();
+            builder.Services.AddTransient<MinhasComprasVM>();
+            builder.Services.AddTransient<GerenciarComprasVM>();
 
 
             // Registre suas Views (Páginas)
@@ -30,6 +35,9 @@ namespace MotoAPP
             builder.Services.AddTransient<VisMotoView>();
             builder.Services.AddTransient<PrincipalView>();
             builder.Services.AddTransient<LoginView>();
+            builder.Services.AddTransient<CompraMotoView>();
+            builder.Services.AddTransient<MinhasComprasView>();
+            builder.Services.AddTransient<GenrenciarComprasView>();
 
 
 #if DEBUG

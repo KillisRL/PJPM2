@@ -3,27 +3,56 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MotoAPP.Views.PrincipalView"
              Title="Tela Principal"
-             WidthRequest="400">
+             BackgroundColor="#1E1E1E">
+    <ContentPage.Resources>
+        <Style x:Key="MenuButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#007bff"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="HeightRequest" Value="55"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#444444"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="CornerRadius" Value="8"/>
+        </Style>
+    </ContentPage.Resources>
+
     <ScrollView>
-        <StackLayout>
+        <VerticalStackLayout VerticalOptions="Center" Spacing="20" Padding="30">
+
             <Label Text="Seja Bem-Vindo!"
                    FontSize="36"
-                   FontAttributes="Bold"/>
-            <Label Text="{Binding NomeUsuarioLogado, StringFormat='Bem-Vindo: {0}'}"
                    FontAttributes="Bold"
-                   FontSize="Subtitle"/>
+                   TextColor="White"
+                   HorizontalOptions="Center"/>
 
-            <Button Text="Voltar"
-                    Command="{Binding CommandVoltar}"
-                    Margin="0,20,0,0"/>
-
+            <Label Text="{Binding NomeUsuarioLogado}"
+                   FontAttributes="Bold"
+                   FontSize="22"
+                   TextColor="#AAAAAA"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,20"/>
             <Button Text="Cadastrar Moto"
                     Command="{Binding CommandMotoView}"
-                    Margin="0,20,0,0"/>
+                    Style="{StaticResource MenuButton}"/>
 
             <Button Text="Visualizar Motos"
                     Command="{Binding CommandVisMotoView}"
+                    Style="{StaticResource MenuButton}"/>
+
+            <Button Text="Gerenciar Consórcios"
+                    Command="{Binding CommandGerenciarComprasMoto}"
+                    Style="{StaticResource MenuButton}"/>
+
+            <Button Text="Voltar"
+                    Command="{Binding CommandVoltar}"
+                    Style="{StaticResource SecondaryButton}"
                     Margin="0,20,0,0"/>
-        </StackLayout>
+
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
